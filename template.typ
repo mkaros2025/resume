@@ -18,6 +18,26 @@
 
 #let fa-angle-right = icon("icons/fa-angle-right.svg")
 
+// 技能表格函数 - 新增
+#let skills-table(skills) = {
+  let rows = ()
+  for skill in skills {
+    rows.push(
+      (
+        [*#skill.name:*],
+        [#skill.content]
+      )
+    )
+  }
+  
+  table(
+    columns: (25%, 1fr),
+    inset: (x: 0em, y: 0.4em),
+    stroke: none,
+    ..rows.flatten()
+  )
+}
+
 // 主体
 #let resume(
   size: 10pt,
@@ -49,14 +69,12 @@
   show heading.where(level: 2): it => stack(
     v(0.3em),
     it,
-    v(0.6em),
+    v(0.5em), // 减小标题和内容的距离
     line(length: 100%, stroke: 0.05em + theme-color),
     v(0.1em),
   )
 
   // 更改 bullet list 的图标
-  // set list(indent: 1em, body-indent: 0.8em, marker: faAngleRight)
-  // 上面的语句无法精确控制图标位置, 因此改用了下列方法重写 list
   show list: it => stack(
     spacing: 0.4em,
     ..it.children.map(item => {
@@ -76,10 +94,9 @@
   show link: set text(fill: theme-color)
 
   // 主体设定
-  set par(justify: true, spacing: 1em)
+  set par(justify: true, spacing: 0.8em) // 减小段落间距
 
   // 首部与照片
-
   if header-center {
     assert(photograph == "", message: "can not centerize the name with the photo")
     align(alignment.center, header)
@@ -173,7 +190,7 @@
   desc,
   endnote,
 ) = {
-  v(0.25em)
+  v(0.2em) // 减小项目之间的间距
   grid(
     columns: (30%, 1fr, auto),
     gutter: 0em,
